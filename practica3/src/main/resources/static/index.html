@@ -5,9 +5,17 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     </script>
     <script>  
+        function redirectInfo(name) { 
+            console.log("Este la url")
+            url=window.location.href+"/viewInfo"
+            console.log(url)
+            window.location.href = url
+        }
+    </script>
+    <script>  
         function redirectGameInfo(name) { 
             console.log("Este la url")
-            url="http://localhost:8080/program/listData/"+name
+            url=window.location.href+"/program/listData/"+name
             console.log(url)
             window.location.href = url
         }
@@ -15,7 +23,7 @@
     <script>  
         function redirectGameList(location) { 
             console.log("Este la url")
-            url="http://localhost:8080/program/listGamesInLocation/"+location
+            url=window.location.href+"/program/listGamesInLocation/"+location
             console.log(url)
             window.location.href = url
         }
