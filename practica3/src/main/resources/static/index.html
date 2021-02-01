@@ -3,12 +3,22 @@
 <head>
     <title>Practica 3 - Grupo 7 - MSDOS</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="webjars/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"
-          type="text/css"/>
-    <script src="webjars/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
-    <script src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"
-            type="text/javascript"></script>
-    <script src="js/app.js" type="text/javascript">
+    </script>
+    <script>  
+        function redirectGameInfo(name) { 
+            console.log("Este la url")
+            url="http://localhost:8080/program/listData/"+name
+            console.log(url)
+            window.location.href = url
+        }
+    </script>
+    <script>  
+        function redirectGameList(location) { 
+            console.log("Este la url")
+            url="http://localhost:8080/program/listGamesInLocation/"+location
+            console.log(url)
+            window.location.href = url
+        }
     </script>
 
 </head>
@@ -20,16 +30,35 @@
             <h1>Practica 3 - Grupo 7</h1>
             <p class="lead">A front-end example page for the project</p>
             <br>
-
-
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 text-center">
-            <div class="col-sm-offset-4 col-sm-4 text-center">
-                <br/>
-                <div id="result"/>
-            </div>
+        <div class="col-lg-4 text-center">
+            <h3>Obtener registros del sistema</h3>
+            <form>
+                <a href="http://localhost:8080/program/viewInfo"><p>Obtener registros</p></a>
+            </form>
+            <br>
+        </div>
+        
+        <div class="col-lg-4 text-center">
+            <h3>Obtener informacion de un juego</h3>
+            <form>
+                <div>
+                    <textarea id="name">Nombre</textarea>
+                    <button type="reset" onClick="redirectGameInfo(getElementById('name').value)">Obtener Informacion</button>
+                </div>
+            </form>
+            <br>
+        </div>
+
+        <div class="col-lg-4 text-center">
+            <h3>Obtener juegos en una cinta</h3>
+            <form>
+                <textarea id="location">Cinta</textarea>
+                <button type="reset" onClick="redirectGameList(getElementById('location').value)">Obtener Informacion</button>
+            </form>
+            <br>
         </div>
     </div>
 </div>

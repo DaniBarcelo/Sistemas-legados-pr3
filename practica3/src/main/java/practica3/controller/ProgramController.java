@@ -33,7 +33,7 @@ public class ProgramController {
     @GetMapping("/program/listData/{name}")
     public ResponseEntity<Game> getGame(@PathVariable("name") String name) throws InterruptedException, IOException, TesseractException {
 
-            Game g = program.listData("Reversi");
+            Game g = program.listData(name);
             return new ResponseEntity<>(g, HttpStatus.OK);
     }
 

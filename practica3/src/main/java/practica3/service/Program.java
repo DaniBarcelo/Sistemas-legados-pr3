@@ -127,153 +127,175 @@ public class Program {
 
         String lines[] = screen.split("\n");
         String words [] = lines[1].split(" ");
-        String result = "Contiene " + words[1] + "archivos.";
+        String result = "Contiene " + words[1] + " archivos.";
         return result;
     }
 
     public Game listData (String name) throws IOException, InterruptedException, TesseractException {
-        startDatabase();
-        Thread.sleep(5000);
-        pressKey(KeyEvent.VK_7);
-        releaseKey(KeyEvent.VK_7);
-        pressKey(KeyEvent.VK_SHIFT);
-        pressKey(KeyEvent.VK_N);
-        releaseKey(KeyEvent.VK_N);
-        releaseKey(KeyEvent.VK_SHIFT);
-        pressKey(KeyEvent.VK_ENTER);
-        releaseKey(KeyEvent.VK_ENTER);
-        for (int i=0;i<name.length();i++){
-            char c = name.charAt(i);
-            robot.keyPress(KeyEvent.VK_SHIFT);
-            robot.keyPress(Character.toUpperCase(c));
-            robot.keyRelease(Character.toUpperCase(c));
-            robot.keyRelease(KeyEvent.VK_SHIFT);
-            Thread.sleep(50);
-        }
-        pressKey(KeyEvent.VK_ENTER);
-        releaseKey(KeyEvent.VK_ENTER);
-        String screen = captureScreen();
-        System.out.println(screen);
-        String gameWords [] = name.split(" ");
-        String pieces [] = screen.split("\n");
-        String gameData[] = pieces[0].split(" ");
-        String gameId=gameData[0];
-        String gameName = "";
-        int j = 2;
-        while(j-2<gameWords.length){
-            gameName = gameName + gameData[j] + " ";
+        try{
+            startDatabase();
+            Thread.sleep(5000);
+            pressKey(KeyEvent.VK_7);
+            releaseKey(KeyEvent.VK_7);
+            pressKey(KeyEvent.VK_SHIFT);
+            pressKey(KeyEvent.VK_N);
+            releaseKey(KeyEvent.VK_N);
+            releaseKey(KeyEvent.VK_SHIFT);
+            pressKey(KeyEvent.VK_ENTER);
+            releaseKey(KeyEvent.VK_ENTER);
+            for (int i=0;i<name.length();i++){
+                char c = name.charAt(i);
+                robot.keyPress(KeyEvent.VK_SHIFT);
+                robot.keyPress(Character.toUpperCase(c));
+                robot.keyRelease(Character.toUpperCase(c));
+                robot.keyRelease(KeyEvent.VK_SHIFT);
+                Thread.sleep(50);
+            }
+            pressKey(KeyEvent.VK_ENTER);
+            releaseKey(KeyEvent.VK_ENTER);
+            String screen = captureScreen();
+            System.out.println(screen);
+            String gameWords [] = name.split(" ");
+            String pieces [] = screen.split("\n");
+            String gameData[] = pieces[0].split(" ");
+            String gameId=gameData[0];
+            String gameName = "";
+            int j = 2;
+            while(j-2<gameWords.length){
+                gameName = gameName + gameData[j] + " ";
+                j++;
+            }
+            String gameLocation = gameData[gameData.length-1];
+            String gameType = gameData[j];
             j++;
+            while(gameData[j]!=gameLocation){
+                gameType=gameType+" "+gameData[j];
+                j++;
+            }
+            gameLocation=gameLocation.replaceFirst("E",":");
+            System.out.println(gameId);
+            System.out.println(gameName);
+            System.out.println(gameType);
+            System.out.println(gameLocation);
+            Game g = new Game(gameId,name,gameType,gameLocation);
+            pressKey(KeyEvent.VK_CONTROL);
+            pressKey(KeyEvent.VK_F9);
+            releaseKey(KeyEvent.VK_CONTROL);
+            releaseKey(KeyEvent.VK_F9);
+            return g;
         }
-        String gameLocation = gameData[gameData.length-1];
-        String gameType = gameData[j];
-        j++;
-        while(gameData[j]!=gameLocation){
-            gameType=gameType+" "+gameData[j];
-            j++;
+        catch(Exception e){
+            pressKey(KeyEvent.VK_CONTROL);
+            pressKey(KeyEvent.VK_F9);
+            releaseKey(KeyEvent.VK_CONTROL);
+            releaseKey(KeyEvent.VK_F9);
+            return null;
         }
-        gameLocation=gameLocation.replaceFirst("E",":");
-        System.out.println(gameId);
-        System.out.println(gameName);
-        System.out.println(gameType);
-        System.out.println(gameLocation);
-        Game g = new Game(gameId,gameName,gameType,gameLocation);
-        pressKey(KeyEvent.VK_CONTROL);
-        pressKey(KeyEvent.VK_F9);
-        releaseKey(KeyEvent.VK_CONTROL);
-        releaseKey(KeyEvent.VK_F9);
-        return g;
     }
 
 
     public List<Game> listGamesInLocation(String location) throws IOException, InterruptedException, TesseractException {
-        startDatabase();
-        Thread.sleep(5000);
-        pressKey(KeyEvent.VK_3);
-        releaseKey(KeyEvent.VK_3);
-        pressKey(KeyEvent.VK_3);
-        releaseKey(KeyEvent.VK_3);
-        pressKey(KeyEvent.VK_ENTER);
-        releaseKey(KeyEvent.VK_ENTER);
-        //Duerme el proceso 30 segundos para dar tiempo al programa a ordenar la base de datos
-        Thread.sleep(30000);
-        pressKey(KeyEvent.VK_ENTER);
-        releaseKey(KeyEvent.VK_ENTER);
-        pressKey(KeyEvent.VK_6);
-        releaseKey(KeyEvent.VK_6);
-        //Escribir la cinta deseada
-        for (int i=0;i<location.length();i++){
-            char c = location.charAt(i);
-            robot.keyPress(KeyEvent.VK_SHIFT);
-            robot.keyPress(Character.toUpperCase(c));
-            robot.keyRelease(Character.toUpperCase(c));
-            robot.keyRelease(KeyEvent.VK_SHIFT);
-            Thread.sleep(50);
+        try{
+            startDatabase();
+            Thread.sleep(5000);
+            pressKey(KeyEvent.VK_3);
+            releaseKey(KeyEvent.VK_3);
+            pressKey(KeyEvent.VK_3);
+            releaseKey(KeyEvent.VK_3);
+            pressKey(KeyEvent.VK_ENTER);
+            releaseKey(KeyEvent.VK_ENTER);
+            //Duerme el proceso 30 segundos para dar tiempo al programa a ordenar la base de datos
+            Thread.sleep(30000);
+            pressKey(KeyEvent.VK_ENTER);
+            releaseKey(KeyEvent.VK_ENTER);
+            pressKey(KeyEvent.VK_6);
+            releaseKey(KeyEvent.VK_6);
+            //Escribir la cinta deseada
+            for (int i=0;i<location.length();i++){
+                char c = location.charAt(i);
+                robot.keyPress(KeyEvent.VK_SHIFT);
+                robot.keyPress(Character.toUpperCase(c));
+                robot.keyRelease(Character.toUpperCase(c));
+                robot.keyRelease(KeyEvent.VK_SHIFT);
+                Thread.sleep(50);
+            }
+            pressKey(KeyEvent.VK_ENTER);
+            releaseKey(KeyEvent.VK_ENTER);
+            //Dormir 5 segundos para dar tiempo a buscar
+            Thread.sleep(5000);
+            String screen = captureScreen();
+            List<Game> games = new ArrayList<>();
+            //Game games [];                  //Inicializar los juegos a "vacío"?
+            Game nullGame = new Game();
+            games.add(nullGame);
+            String lines[] = screen.split("\n");
+            int i=0;
+            int j=0;                    //Para permitir comparar con el anterior y contar cuantos juegos han sido añadidos.
+            do{
+                if(i==0){
+                    System.out.println("Estoy en i=0");
+                    lines = screen.split("\n");
+                }
+                if(i==18 || lines[i].contains("space")){
+                    System.out.println("Estoy en i=19 o mi linea contiene la palabra space");
+                    pressKey(KeyEvent.VK_SPACE);
+                    releaseKey(KeyEvent.VK_SPACE);
+                    Thread.sleep(200);
+                    screen = captureScreen();
+                    i=0;
+                }
+                else{
+                    j++;
+                    i++;
+                    System.out.println(lines[i]);
+                    String pieces[] = lines[i].split(" ");
+                    String register = pieces[pieces.length-1];
+                    String id = pieces[0];
+                    String tape = pieces[pieces.length-2];
+                    String type = pieces[pieces.length-3];
+                    int k=4;
+                    if (type.contains("DEPORTIVO")){
+                        type = pieces[pieces.length-4] + " " + type;
+                        k=k+1;
+                    }
+                    if(type.contains("MESA")){
+                        type = pieces[pieces.length-5] + " " + pieces[pieces.length-4] + " " + type;
+                        k=k+2;
+                    }
+                    String name = pieces[pieces.length-k];
+                    while(pieces.length-k>1){
+                        k++;
+                        name = pieces[pieces.length-k] + " " + name;
+                    }
+                    System.out.println(id);
+                    System.out.println(name);
+                    System.out.println(type);
+                    System.out.println(tape);
+                    System.out.println(register);
+                    System.out.println("--------------------");
+                    Game g = new Game(id,name,type,tape,register);
+                    games.add(g);
+                }
+            }while(games.get(j).getLocation().contains(location) || (games.get(j).getLocation()==games.get(j-1).getLocation() || games.get(j-1).getLocation()==null || games.get(j).getLocation().contains(games.get(j-1).getLocation()) || games.get(j-1).getLocation().contains(games.get(j).getLocation())));
+            games.remove(j);
+            System.out.println("VOY A ORDENAR LOS JUEGOS");
+            sortGames(games);
+            for(int w=1;w<games.size();w++){
+                System.out.println(games.get(w).getRegister());
+            }
+            pressKey(KeyEvent.VK_CONTROL);
+            pressKey(KeyEvent.VK_F9);
+            releaseKey(KeyEvent.VK_CONTROL);
+            releaseKey(KeyEvent.VK_F9);
+            return games;
         }
-        pressKey(KeyEvent.VK_ENTER);
-        releaseKey(KeyEvent.VK_ENTER);
-        //Dormir 5 segundos para dar tiempo a buscar
-        Thread.sleep(5000);
-        String screen = captureScreen();
-        List<Game> games = new ArrayList<>();
-        //Game games [];                  //Inicializar los juegos a "vacío"?
-        Game nullGame = new Game();
-        games.add(nullGame);
-        String lines[] = screen.split("\n");
-        int i=0;
-        int j=0;                    //Para permitir comparar con el anterior y contar cuantos juegos han sido añadidos.
-        do{
-            if(i==0){
-                System.out.println("Estoy en i=0");
-                lines = screen.split("\n");
-            }
-            if(i==18 || lines[i].contains("space")){
-                System.out.println("Estoy en i=19 o mi linea contiene la palabra space");
-                pressKey(KeyEvent.VK_SPACE);
-                releaseKey(KeyEvent.VK_SPACE);
-                Thread.sleep(200);
-                screen = captureScreen();
-                i=0;
-            }
-            else{
-                j++;
-                i++;
-                System.out.println(lines[i]);
-                String pieces[] = lines[i].split(" ");
-                String register = pieces[pieces.length-1];
-                String id = pieces[0];
-                String tape = pieces[pieces.length-2];
-                String type = pieces[pieces.length-3];
-                int k=4;
-                if (type.contains("DEPORTIVO")){
-                    type = pieces[pieces.length-4] + " " + type;
-                    k=k+1;
-                }
-                if(type.contains("MESA")){
-                    type = pieces[pieces.length-5] + " " + pieces[pieces.length-4] + " " + type;
-                    k=k+2;
-                }
-                String name = pieces[pieces.length-k];
-                while(pieces.length-k>1){
-                    k++;
-                    name = pieces[pieces.length-k] + " " + name;
-                }
-                System.out.println(id);
-                System.out.println(name);
-                System.out.println(type);
-                System.out.println(tape);
-                System.out.println(register);
-                System.out.println("--------------------");
-                Game g = new Game(id,name,type,tape,register);
-                games.add(g);
-            }
-        }while(games.get(j).getLocation().contains(location) || (games.get(j).getLocation()==games.get(j-1).getLocation() || games.get(j-1).getLocation()==null || games.get(j).getLocation().contains(games.get(j-1).getLocation()) || games.get(j-1).getLocation().contains(games.get(j).getLocation())));
-        games.remove(j);
-        System.out.println("VOY A ORDENAR LOS JUEGOS");
-        sortGames(games);
-        for(int w=1;w<games.size();w++){
-            System.out.println(games.get(w).getRegister());
+        catch(Exception e){
+            pressKey(KeyEvent.VK_CONTROL);
+            pressKey(KeyEvent.VK_F9);
+            releaseKey(KeyEvent.VK_CONTROL);
+            releaseKey(KeyEvent.VK_F9);
+            return null;
         }
-        return games;
     }
 
 
