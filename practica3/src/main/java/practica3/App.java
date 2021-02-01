@@ -10,11 +10,15 @@ import net.sourceforge.tess4j.TesseractException;
 
 import java.awt.AWTException;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import practica3.service.Program;
 import practica3.domain.Game;
 
+@SpringBootApplication
 public class App {
     public static void main(String[] args) throws AWTException, InterruptedException, TesseractException {
+        /*
         try {
             Program program = new Program();
             program.viewInfo();
@@ -22,6 +26,9 @@ public class App {
             List<Game> games = program.listGamesInLocation("B");
         } catch (IOException e) {
             e.printStackTrace();
-        }    
+        }
+        */
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(App.class);
+        builder.headless(false).run(args);
     }
 }

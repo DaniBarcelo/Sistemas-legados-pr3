@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import com.sun.jna.platform.WindowUtils;
 
+import org.springframework.stereotype.Service;
 import practica3.domain.Game;
 
 import javax.imageio.ImageIO;
@@ -25,7 +26,7 @@ import java.util.logging.Level;
 import java.util.Collections;
 
 
-
+@Service
 public class Program {
 
     private Robot robot;
@@ -40,8 +41,13 @@ public class Program {
         robot = new Robot();
     }
 
+
     private void startDatabase() throws IOException, InterruptedException {
-        Runtime.getRuntime().exec("cmd /c DOSBox-0.74\\DOSBox.exe Database\\gwbasic.bat -noconsole", null, new File("D:\\HOME\\CUARTO\\Sistemas Legados\\practica 3\\Database-MSDOS"));
+        System.out.println("\\..\\..\\..\\..\\..\\..\\..\\Database-MSDOS");
+        String path=System.getProperty("user.dir"); //returns the working directory
+        String relativePath="\\..\\Database-MSDOS";
+        path+=relativePath;
+        Runtime.getRuntime().exec("cmd /c DOSBox-0.74\\DOSBox.exe Database\\gwbasic.bat -noconsole", null, new File(path));
     }
 
     private void pressKey(Integer key) throws InterruptedException {
@@ -80,7 +86,9 @@ public class Program {
         releaseKey(KeyEvent.VK_ALT);
         Thread.sleep(2000);
         Tesseract1 ocr = new Tesseract1();
-        ocr.setDatapath("D:\\HOME\\CUARTO\\Sistemas Legados\\practica 3\\practica3");
+
+        String path=System.getProperty("user.dir"); //returns the working directory
+        ocr.setDatapath(path);
         ocr.setLanguage("spa");
         String result = ocr.doOCR(capture);
         if (result != null) {
@@ -105,7 +113,7 @@ public class Program {
     }
 
 
-    public void viewInfo() throws InterruptedException, IOException, TesseractException {
+    public String viewInfo() throws InterruptedException, IOException, TesseractException {
         startDatabase();
         Thread.sleep(5000);
         pressKey(KeyEvent.VK_4);
@@ -116,6 +124,11 @@ public class Program {
         pressKey(KeyEvent.VK_F9);
         releaseKey(KeyEvent.VK_CONTROL);
         releaseKey(KeyEvent.VK_F9);
+
+        String lines[] = screen.split("\n");
+        String words [] = lines[1].split(" ");
+        String result = "Contiene " + words[1] + "archivos.";
+        return result;
     }
 
     public Game listData (String name) throws IOException, InterruptedException, TesseractException {
